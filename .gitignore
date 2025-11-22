@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+checkpoints/
+cnn_results/
+lr_predictor_checkpoints/
+meta_results/
+err/
+out/
+data/
+# Virtual environments
+.venv
