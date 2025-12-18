@@ -310,12 +310,13 @@ cfg.num_batches = train_utils.estimate_num_batches(cfg.num_train, cfg.batch_size
 
 print(cfg)
 
+trained_for = cfg.lr_predictor_ckpt_path.split('step_')[1]
 ### TRAIN THE NETWORK AND EVALUATE ####
 
-cfg.train_path = f'{cfg.save_dir}/train_{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}.tab'    
-cfg.eval_path = f'{cfg.save_dir}/eval_{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}.tab'    
+cfg.train_path = f'{cfg.save_dir}/train_step{trained_for}_{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}.tab'    
+cfg.eval_path = f'{cfg.save_dir}/eval_step{trained_for}_{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}.tab'    
 # checkpoint filename
-cfg.ckpt_dir = f'{cfg.ckpt_dir}/{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}'
+cfg.ckpt_dir = f'{cfg.ckpt_dir}/step{trained_for}_{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{cfg.use_bias}_{cfg.act_name}_I{cfg.init_seed}_J{cfg.sgd_seed}_{cfg.loss_name}_aug{cfg.augment}_{cfg.opt_name}_lr{cfg.lr_peak:0.1e}_lr{cfg.lr_min_factor}_k{cfg.warmup_exponent}_{cfg.decay_schedule_name}_p{cfg.decay_exponent}_Tw{cfg.warmup_steps}_T{cfg.num_steps}_B{cfg.batch_size}_m{cfg.momentum}_gc{cfg.grad_clip}_wd{cfg.weight_decay}'
 
 # when to save checkpoints
 # for the first 10000 steps, save every 1000 steps

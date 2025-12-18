@@ -41,7 +41,7 @@ def get_all_checkpoint_paths(cfg):
     seeds = [0, 42, 777, 1337, 12345]
     lrs = [0.001, 0.01, 0.1, 1.0]
     steps = [i for i in range(0, 10000, 1000)] + [10000]
-    
+    widths = [16, 24, 32] 
     # Hardcoded checkpoint hyperparameters (these were used to CREATE the checkpoints)
     ckpt_hparams = {
         'use_bias': 'False',
@@ -62,14 +62,15 @@ def get_all_checkpoint_paths(cfg):
     }
     
     checkpoint_paths = []
-    
-    for seed in seeds:
-        for lr in lrs:
-            for step in steps:
-                # Build checkpoint path using CHECKPOINT hyperparameters
-                ckpt_path = f'{cfg.ckpt_base_dir}/{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{ckpt_hparams["use_bias"]}_{cfg.act_name}_I{seed}_J{ckpt_hparams["sgd_seed"]}_{ckpt_hparams["loss_name"]}_aug{ckpt_hparams["augment"]}_{ckpt_hparams["opt_name"]}_lr{lr:0.1e}_lr{ckpt_hparams["lr_min_factor"]}_k{ckpt_hparams["warmup_exponent"]}_{ckpt_hparams["decay_schedule_name"]}_p{ckpt_hparams["decay_exponent"]}_Tw{ckpt_hparams["warmup_steps"]}_T{ckpt_hparams["num_steps"]}_B{ckpt_hparams["batch_size"]}_m{ckpt_hparams["momentum"]}_gc{ckpt_hparams["grad_clip"]}_wd{ckpt_hparams["weight_decay"]}/step_{step}'
+    for width in widths:
+        for seed in seeds:
+            for lr in lrs:
+                for step in steps:
+                    # Build checkpoint path using CHECKPOINT hyperparameters
+                    ckpt_path = f'{cfg.ckpt_base_dir}/{cfg.dataset_name}_{cfg.model}_{cfg.abc}_n{cfg.width}_d{cfg.depth}_bias{ckpt_hparams["use_bias"]}_{cfg.act_name}_I{seed}_J{ckpt_hparams["sgd_seed"]}_{ckpt_hparams["loss_name"]}_aug{ckpt_hparams["augment"]}_{ckpt_hparams["opt_name"]}_lr{lr:0.1e}_lr{ckpt_hparams["lr_min_factor"]}_k{ckpt_hparams["warmup_exponent"]}_{ckpt_hparams["decay_schedule_name"]}_p{ckpt_hparams["decay_exponent"]}_Tw{ckpt_hparams["warmup_steps"]}_T{ckpt_hparams["num_steps"]}_B{ckpt_hparams["batch_size"]}_m{ckpt_hparams["momentum"]}_gc{ckpt_hparams["grad_clip"]}_wd{ckpt_hparams["weight_decay"]}/step_{step}'
                 
-                checkpoint_paths.append((ckpt_path, seed, lr, step))
+                    if os.path.exists(ckpt_path):
+                        checkpoint_paths.append((ckpt_path, width, seed, lr, step))
     
     return checkpoint_paths
 
@@ -103,7 +104,7 @@ def inner_loop_train(lr_predictor_params, lr_predictor_apply, checkpoint_info, t
     Returns:
         avg_loss: average loss over rollout
     """
-    checkpoint_path, seed, lr, start_step = checkpoint_info
+    checkpoint_path, width, seed, lr, start_step = checkpoint_info
     x_train, y_train = train_ds
     
     # Initialize task network
